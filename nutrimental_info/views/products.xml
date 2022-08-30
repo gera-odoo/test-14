@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="product_product_inherit" model="ir.ui.view">
+        <field name="name">Product Inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='uom_po_id']" position="after">
+                <field name="display_nutrimental_info" invisible="1"/>
+            </xpath>
+            <page name="general_information" position="after">
+                <page name="nutrimental" string="Nutrimental info"
+                      attrs="{'invisible':[('display_nutrimental_info','=',False)]}">
+                    <group>
+                        <group>
+                            <label for="size"/>
+                            <div class="o_row" name="size" string="Size">
+                                <field name="size" string="Size"/>
+                                <span>
+                                    <field name="size_uom_id"/>
+                                </span>
+                            </div>
+                            <label for="servings_per_container"/>
+                            <div class="o_row" name="servings_per_container">
+                                <field name="servings_per_container"/>
+                                <span>
+                                    <field name="additional_servings_info"/>
+                                </span>
+                            </div>
+                            <field name="has_second_servings"/>
+                        </group>
+                        <group attrs="{'invisible':[('has_second_servings','=',False)]}">
+                            <label for="second_size"/>
+                            <div class="o_row" name="second_size" string="Size">
+                                <field name="second_size" string="Size"/>
+                                <span>
+                                    <field name="second_size_uom_id"/>
+                                </span>
+                            </div>
+                            <label for="second_servings_per_container"/>
+                            <div class="o_row" name="second_servings_per_container">
+                                <field name="second_servings_per_container"/>
+                                <span>
+                                    <field name="second_additional_servings_info"/>
+                                </span>
+                            </div>
+                        </group>
+                    </group>
+                    <field name="nutrimental_ids">
+                        <tree string="Nutrimental Info" editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="group_id"/>
+                            <field name="nutriment_id"/>
+                            <field name="value"/>
+                            <field name="uom_id"/>
+                            <field name="quantity"/>
+                            <field name="additional_info"/>
+                            <field name="second_quantity" attrs="{'column_invisible':[('parent.has_second_servings','=',False)]}"/>
+                            <field name="additional_info_second"
+                                   attrs="{'column_invisible':[('parent.has_second_servings','=',False)]}"/>
+                        </tree>
+                    </field>
+                    <field name="recommended_use" placeholder="Recommended Use..."/>
+                    <field name="other_ingredients" placeholder="Other Ingredients..."/>
+                    <field name="additional_claim" placeholder="Additional claim..."/>
+                </page>
+            </page>
+        </field>
+    </record>
+
+    <record id="view_product_category_form" model="ir.ui.view">
+        <field name="name">Info nutrimental</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[2]" position="after">
+                <group>
+                    <group name="food_left" string="Nutrimental info">
+                        <field name="display_nutrimental_info"/>
+                    </group>
+                    <group/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
